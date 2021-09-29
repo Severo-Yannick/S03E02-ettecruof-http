@@ -12,6 +12,8 @@ let number = getRandom(minBoundary, maxBoundary);
 let message = '';
 
 const Response = ((req, res) => {
+  // Permet les accents et caractères spéciaux
+  res.setHeader('Content-Type', 'text/html; charset=utf-8');
   switch (req.url) {
     case '/':
       message = `Est ce que le nombre est ${number} ?`;
