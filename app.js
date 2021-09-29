@@ -3,34 +3,37 @@ const http = require('http');
 const PORT = 3000;
 // Fonction qui génère ue nombre aléatoire
 const getRandom = require('./modules/randomNumber');
+// Nombre aléatoire mini
+let minBoundary = 1;
+// Nombre aléatoire maxi
+let maxBoundary = 100;
+// Génération d'un nombre aléatoire
+let number = getRandom(minBoundary, maxBoundary);
+let message = '';
 
-// Creation du serveur
 const Response = ((req, res) => {
-  let number = getRandom(1, 101);
-  let message = '';
-
   switch (req.url) {
     case '/':
-      message = 'Est ce que c\'est plus de 50 ?';
+      message = `Est ce que le nombre est ${number} ?`;
       break;
     case '/plus':
-      message = 'Vous dites Plus OK!';
+      minBoundary = number ++;
+      number = getRandom(minBoundary, maxBoundary);
+      message = `Est ce que le nombre est ${number} ?`;
       break;
     case '/moins':
-      message = 'Vous dites Moins OK!';
-      break;
+      maxBoundary = number --;
+      number = getRandom(minBoundary, maxBoundary);
+      message = `Est ce que le nombre est ${number} ?`;
+    break;
     case '/bravo':
       message = 'C\'est gagné !';
       break;
-    case '/number':
-      message = `Nombre aléatoire entre 1 & 100 inclus ==> ${number}`;
-      break;
-
     default:
       res.statusCode = 404;
       message = 'Page non trouvée';
   }
-  res.write(`<p style="text-align: center;">${message}</p>`);
+  res.write(`<p style='text-align: center;'>${message}</p>`);
   res.end();
 });
 
